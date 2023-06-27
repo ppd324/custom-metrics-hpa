@@ -1,0 +1,31 @@
+prometheus:
+   url: http://mon-kube-prometheus-stack-prometheus.monitoring.svc
+   port: 9090
+metricsRelistInterval: 10s
+logLevel: 4
+rules:  #用于custom.metrics.k8s.io,用于自定义指标的监控，定义指标转换规则，用作custom.metrics.k8s.io HPA使用
+ default: false
+ custom:
+   - seriesQuery: 'total_req_num{status!="", api!=""}' #用于筛选series
+     resources: #将series中的标签与目标资源类型关联起来
+       overrides: #将series中的namespace字段与k8s资源中的namespace字段关联起来
+         namespace: 
+           resource: "namespace"  #将series中的namespace字段与k8s资源中的namespace字段关联>起来
+         pod: 
+           resource: "pod"   #将series中的pod字段，与资源中的pods字段关联
+     name: #用于给指标重命名，比如以_total结尾的指标，去掉后缀
+      matches: "total_req_num" #匹配源指标名
+      as: "qps" #目标指标名称
+     metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[30s])) by (<<.GroupBy>>)' #转换指标规则
+   - seriesQuery: 'cpu_temperature_celsius'
+     resources:
+       overrides:
+         namespace: 
+           resource: "namespace"  #将series中的namespace字段与k8s资源中的namespace字段关联>起来
+         pod: 
+           resource: "pod"   #将series中的pod字段，与资源中的pods字段关联
+     name:
+      matches: "cpu_temperature_celsius"
+      as: "cpuTemperature"
+     metricsQuery: 'avg(<<.Series>>) by (<<.GroupBy>>)'
+

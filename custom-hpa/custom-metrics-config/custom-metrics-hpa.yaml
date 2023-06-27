@@ -1,0 +1,21 @@
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: custom-metrics-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: custom-metrics-app
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Pods
+      pods:
+       metricName: qps
+       targetAverageValue: 500m
+    - type: Pods
+      pods:
+        metricName: cpuTemperature
+        targetAverageValue: 80
+          

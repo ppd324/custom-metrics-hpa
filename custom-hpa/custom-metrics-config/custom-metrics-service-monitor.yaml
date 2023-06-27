@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: custom-metrics-sm
+  labels:
+    release: mon
+spec:
+  jobLabel: custom-metrics
+  selector:
+    matchLabels:
+      app: custom-metrics-app
+  endpoints:
+  - port: http
+    interval: 10s
+    path: /metrics

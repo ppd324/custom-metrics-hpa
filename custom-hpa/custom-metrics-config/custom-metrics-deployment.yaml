@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: custom-metrics-app
+  name: custom-metrics-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custom-metrics-app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9090"
+      labels:
+        app: custom-metrics-app
+    spec:
+      containers:
+        - image: custom-metrics-app:v1
+          name: custom-server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: '300Mi'
