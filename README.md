@@ -369,58 +369,58 @@ horizontalpodautoscaler.autoscaling/custom-metrics-hpa   Deployment/custom-metri
 
 在prometheus服务中，可查看到该监控任务和监控指标
 
-![](.\images\2023-06-26-16-26-36-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-26-36-image.png)
 
-![](.\images\2023-06-26-16-29-15-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-29-15-image.png)
 
-可查询自定义指标值![](.\images\2023-06-26-16-35-00-image.png)
+可查询自定义指标值![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-35-00-image.png)
 
 ### 1. 使用qps指标进行扩缩容测试
 
 在另一个busybox Pod中shell执行 `while true; do wget -q -O- http://custom-metrics-service.default.svc:3000/; done` 增大qps值，查看扩容情况。
 
-<img src="file:///C:/Users/Lenovo/AppData/Roaming/marktext/images/2023-06-26-16-38-20-image.png" title="" alt="" width="712">
+<img src="https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-38-20-image.png" title="" alt="" width="712">
 
-![](.\images\2023-06-26-16-40-00-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-40-00-image.png)
 
 最大扩容到10个副本。
 
 prometheus 服务页面可以观察到自定义指标实时变化
 
-![](.\images\2023-06-26-16-39-38-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-39-38-image.png)
 
-![](.\images\2023-06-26-16-42-19-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-42-19-image.png)
 
 停止压力测试，整体qps负载下降，观察缩容情况
 
-![](.\images\2023-06-26-16-45-56-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-45-56-image.png)
 
-![](.\images\2023-06-26-16-46-45-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-46-45-image.png)
 
-![](.\images\2023-06-26-16-47-49-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-47-49-image.png)
 
 Pod数量下降
 
-![](.\images\2023-06-26-16-48-37-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-16-48-37-image.png)
 
 ### 2. 使用实时变量（CPU模拟温度）进行扩缩容测试
 
 在另一个busybox Pod中shell执行 `while true; do wget -q -O- http://custom-metrics-service.default.svc:3000/cpuTempDown; sleep 10s;done` 增大温度值，查看扩容情况。
 
-![](.\images\2023-06-26-17-17-26-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-17-26-image.png)
 
 当平均温度大于80度开始扩容
 
-![](.\images\2023-06-26-17-21-39-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-21-39-image.png)
 
-![](.\images\2023-06-26-17-22-49-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-22-49-image.png)
 
-![](.\2023-06-26-17-23-27-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-23-27-image.png)
 
 此时QPS依然很低
 
-![](.\images\2023-06-26-17-24-40-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-24-40-image.png)
 
 最终扩容到最大10个pod
 
-![](.\images\2023-06-26-17-26-01-image.png)
+![](https://github.com/ppd324/custom-metrics-hpa/blob/master/images/2023-06-26-17-26-01-image.png)
